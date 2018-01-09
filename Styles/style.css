@@ -1,0 +1,352 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito:700');
+
+* {
+	font-family:'Nunito', sans-serif;
+}
+
+body {
+	width:100%;
+	display:block;
+	margin:auto;
+	background-color:#EAECEB;
+	margin-top:25px;
+}
+
+h1 {
+	font-size:42px;
+}
+
+.content.with-sidebar {
+	width:82%;
+}
+
+.content {
+	float:left;
+	width:100%;
+}
+
+.sidebar {
+	width:17%;
+	float:left;
+	background-color:#FFF;
+	border-radius:12px;
+	border:solid #000;
+}
+
+h1, h2, h3, h4, h5 .sidebar {
+	text-align:center;
+}
+
+.hidden {
+	display:none;
+}
+
+.half, .quarter, .fitter {
+	float:left;
+	text-align:center;
+}
+
+.half {
+	width:48%;
+	padding-right:1%;
+	margin-left:1%;
+}
+
+.module .half {
+	min-height:600px;
+}
+
+.quarter {
+	width:24%;
+	margin-left:1%;
+}
+
+.fitter {
+	width:2%;
+}
+
+.end {
+	margin-left:0%;
+}
+
+.input {
+	float:left;
+}
+
+.input > label {
+	display:block;
+	text-align:left;
+}
+
+input, select {
+	font-size:20px;
+	border-radius:6px;
+}
+
+.t1 {
+	color:#2C2;
+}
+
+.t3 {
+	color:#22C;
+}
+
+.parallelogram {
+	width:70%;
+	margin:auto;
+	background:#EAECEB;
+	padding:2.5%;
+	-webkit-transform:skew(20deg);
+	-moz-transform:skew(20deg);
+	-o-transform:skew(20deg);
+}
+.parallelogram > * {
+	-webkit-transform:skew(-20deg);
+	-moz-transform:skew(-20deg);
+	-o-transform:skew(-20deg);
+}
+
+.parallelogram.b {
+	-webkit-transform:skew(-20deg);
+	-moz-transform:skew(-20deg);
+	-o-transform:skew(-20deg);
+}
+.parallelogram.b > * {
+	-webkit-transform:skew(20deg);
+	-moz-transform:skew(20deg);
+	-o-transform:skew(20deg);
+}
+
+/*
+ * Landing page
+ */
+
+.landing section {
+	border-top: 10px solid #7EB1CE;
+	border-bottom: 10px solid #7EB1CE;
+	background: #93BBD1;
+	padding:2.5%;
+	margin:25px 0px;
+}
+
+.landing .schoolwork{
+	border-color: #7D99AE;
+	background: #9CB2C3;
+}
+
+/*
+ * Challenge specific
+ */
+
+.puzzle {
+	display:block;
+	position:relative;
+	font-size:800%;
+	margin:auto;
+}
+
+.piece {
+	position:absolute;
+	width:24%;
+	height:24%;
+	border:3px solid #000;
+	border-radius:15px;
+	display:block;
+	background:#DDCBA7;
+	transition-property:all;
+	transition-duration:.25s;
+	transition-timing-function:cubic-bezier(0, 1, 0.5, 1);
+}
+
+.piece.empty {
+	background:#FFF;
+}
+
+.piece p {
+	position:absolute;
+	top:50%;
+	left:50%;
+	margin:auto;
+	transform:translate(-50%, -50%);
+}
+
+.battleship {
+	display:block;
+	position:relative;
+	margin:auto;
+	width:100%;
+}
+
+.battleship div {
+	float:left;
+}
+
+.battleship .radar .grid tbody {
+	background:rgba(16,165,179,1);/* Old Browsers */
+	background:-moz-radial-gradient(center, ellipse cover, rgba(16,165,179,1) 0%, rgba(44,232,166,1) 100%); /* FF3.6+ */
+	background:-webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(16,165,179,1)), color-stop(100%, rgba(44,232,166,1)));/* Chrome, Safari4+ */
+	background:-webkit-radial-gradient(center, ellipse cover, rgba(16,165,179,1) 0%, rgba(44,232,166,1) 100%); /* Chrome10+,Safari5.1+ */
+	background:-o-radial-gradient(center, ellipse cover, rgba(16,165,179,1) 0%, rgba(44,232,166,1) 100%); /* Opera 11.10+ */
+	background:-ms-radial-gradient(center, ellipse cover, rgba(16,165,179,1) 0%, rgba(44,232,166,1) 100%); /* IE 10+ */
+	background:radial-gradient(ellipse at center, rgba(16,165,179,1) 0%, rgba(44,232,166,1) 100%);/* W3C */
+	filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#10a5b3', endColorstr='#2ce8a6', GradientType=1 );/* IE6-9 fallback on horizontal gradient */
+}
+
+.battleship .ship_area .grid tbody {
+	background:rgba(147,213,237,1);
+	background:-moz-linear-gradient(45deg, rgba(147,213,237,1) 0%, rgba(41,184,229,1) 50%, rgba(147,213,237,1) 100%);
+	background:-webkit-gradient(left bottom, right top, color-stop(0%, rgba(147,213,237,1)), color-stop(50%, rgba(41,184,229,1)), color-stop(100%, rgba(147,213,237,1)));
+	background:-webkit-linear-gradient(45deg, rgba(147,213,237,1) 0%, rgba(41,184,229,1) 50%, rgba(147,213,237,1) 100%);
+	background:-o-linear-gradient(45deg, rgba(147,213,237,1) 0%, rgba(41,184,229,1) 50%, rgba(147,213,237,1) 100%);
+	background:-ms-linear-gradient(45deg, rgba(147,213,237,1) 0%, rgba(41,184,229,1) 50%, rgba(147,213,237,1) 100%);
+	background:linear-gradient(45deg, rgba(147,213,237,1) 0%, rgba(41,184,229,1) 50%, rgba(147,213,237,1) 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#93d5ed', endColorstr='#93d5ed', GradientType=1 );
+}
+
+.battleship table {
+	background:#999;
+	border-collapse:collapse;
+	height:100%;
+	width:5%;
+	float:left;
+}
+
+.battleship .grid {
+	width:74%;
+	height:95%;
+}
+
+.battleship table.label-h {
+	width:74%;
+	height:5%;
+	margin-left:5%;
+}
+
+.battleship table.label-v {
+	width:5%;
+	height:95%;
+	clear:both;
+}
+
+.battleship td {
+	height:10%;
+	width:10%;
+	border:solid #000;
+	text-align:center;
+}
+
+.battleship td div {
+	height:100%;
+	width:100%;
+	position:relative;
+	z-index:48;
+}
+
+.battleship .port, .battleship .guide {
+	width:21%;
+	float:left;
+	height:95%;
+	background:#999;
+}
+
+.battleship .half .shipholder {
+	width:66%;
+	position:relative;
+	margin-left:10%;
+	margin-top:10%;
+}
+
+.battleship #droppable {
+	height:80%;
+}
+
+.battleship .ship {
+	position:absolute;
+	z-index:42;
+	width:100%;
+}
+
+.battleship.active .radar td {
+	background:rgba(50, 50, 50, .4);
+}
+
+.battleship.active .radar td:hover, #game.battleship.active .radar td.revealed {
+	background:rgba(255, 255, 255, 0);
+}
+
+.battleship .grid .ship {
+	left:50%;
+	transform:translate(-50%, 0%);
+}
+
+.battleship .radar .grid .ship {
+	display:none;
+}
+
+.battleship .grid .ship.drag {
+	pointer-events:none;
+}
+
+.battleship .grid .ship.error {
+	border:medium solid red;
+	border-radius:15px;
+}
+
+.battleship .grid .ship.rotate {
+	transform:rotate(90deg);
+	transform-origin:50% 0%;
+	top:50%;
+}
+
+.battleship .bg {
+	width:100%;
+}
+
+.battleship .ship img {
+	width:85%;
+	height:auto;
+	display:block;
+	margin:auto;
+}
+
+@media screen and (max-width:768px) {
+	.half, .fitter, .content.with-sidebar {
+		width:100%;
+	}
+	.module .half {
+		min-height:50px;
+	}
+	h1 {
+		margin:1%;
+	}
+	.sidebar {
+		top:10px;
+		z-index:99;
+		position:absolute;
+		width:256px;
+		left:-10px;
+		transition-property:all;
+		transition-duration:.25s;
+		transition-timing-function:cubic-bezier(0, 1, 0.5, 1);
+	}
+	#tab {
+		cursor:pointer;
+		transition-property:all;
+		transition-duration:.25s;
+		transition-timing-function:cubic-bezier(0, 1, 0.5, 1);
+	}
+	.minimized .sidebar {
+		left:-300px;
+	}
+	.minimized #tab {
+		position:absolute;
+		left:300px;
+		width:30%;
+		border:5px solid #40A4CF;
+		background:#56C4EF;
+		border-radius:5px;
+	}
+}
+
+@media screen and (min-width:769px) {
+}

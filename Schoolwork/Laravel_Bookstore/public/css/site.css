@@ -1,0 +1,51 @@
+html{
+    background-color: #DDD;
+    padding: 5% 10%;
+    margin: 20px;
+    color: #000;
+}
+#header {
+    color: #000; font-size: 400%;
+}
+.login{
+	float:right;
+}
+
+
+table{
+	borderL 2px solid black;
+}
+
+td{
+	padding:5px;
+}
+
+.tbl_header{
+    background-color: #EEE;
+    font-size: 150%;
+    color: #000;
+}
+.odd { background-color: #FFF;
+       font-size: 125%;
+       color: #000;
+}
+.even {
+    background-color: #EEE;
+    font-size: 125%;
+    color: #000;
+}
+a:link {color:#000;text-decoration:none;}
+a:visited {color:#000;text-decoration:none;}
+a:hover {color:#000;text-decoration:none;}
+a:active {color:#000;text-decoration:none;}
+.link{
+    color:#000;
+}
+#star{
+    color:#ff0;
+}
+
+img {
+	margin:auto;
+	display:block;
+}

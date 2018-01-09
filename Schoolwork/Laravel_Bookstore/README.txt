@@ -1,0 +1,1 @@
+The SQL code to create the databases is in the /app/database/book.sql file
