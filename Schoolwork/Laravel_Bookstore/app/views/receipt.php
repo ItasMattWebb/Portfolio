@@ -19,7 +19,7 @@
                     $totalprice = 0;
                     $i = 1;
                     foreach ($query as $book) {
-                        $entry = Book::find($book);
+                        $entry = Book::find($book->bookid);
                         if ($entry != null) {
                             if ($entry['availability'] != 0) {
                                 echo 'Book' . $i . ': ';
@@ -27,9 +27,8 @@
                                 echo '    ' . $entry['price'];
                                 echo '<br>';
                                 $totalprice += $entry['price'];
-                                $book = Book::find($book);
-                                $book->availability -= 1;
-                                $book->save();
+                                $entry->availability -= 1;
+                                $entry->save();
                             } else {
                                 echo "Item " . $i . " " . substr($entry['title'], 0, 45) . " Is currently out of stock and was removed from your cart.<br>";
                             }

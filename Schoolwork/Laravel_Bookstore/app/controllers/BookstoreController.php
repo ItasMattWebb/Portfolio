@@ -48,11 +48,34 @@ class BookstoreController extends BaseController {
      * Returns the register view if the user is not logged in
      */
     public function registerAction() {
+		$message = "";
+        if (Input::get('password') != null && Input::get('username') != null && Input::get('email') != null) {
+            $username = Input::get('username');
+            $password = Hash::make(Input::get('password'));
+            $email = Input::get('email');
+            $userexists = User::where('username', '=',$username)->get()->isEmpty();
+            $emailexists = User::where('email', '=', $email)->get()->isEmpty();
+            if (!$userexists || !$emailexists) {
+                $message = "This username or email is already taken.";
+            } else {
+                $user = new User;
+                $user->username = $username;
+                $user->password = $password;
+                $user->email = $email;
+                $user->save();
+        		if (Auth::attempt(['username' => $username, 'password' => Input::get('password')])) {
+                	Session::put('username', $username);
+            		return Redirect::to('/store/browse');
+				}
+            }
+        }
+
         if (Auth::check()) {
             return Redirect::to('/store/browse');
         }
-        else
-            return View::make('register');
+        else {
+            return View::make('register')->with('message', $message);
+		}
     }
 
     /**
@@ -117,43 +140,24 @@ class BookstoreController extends BaseController {
         if (Auth::check()) {
             $bookId = Session::get('currentbook');
             $userId = Auth::user()->id;
-            $rate = Rate::find($bookId);
+            $rate = Rate::where("bookid", "=", $bookId);
+            $userRating = Rate::where("bookid", "=", $bookId)->where("userid", "=", $userId)->first();
             $book = Book::find($bookId);
-            $timesRated = substr_count($rate->userid, "id") - 1;
+            $timesRated = $rate->count();
+			$userRate = new Rate();
             //Checks if user has already rated the book, and updates the rating
-            if (strpos($rate->userid, "id" . $userId) == true) {
-                $totalarray = explode("+", $rate->rating);
-                $ratearray = explode("id", $rate->userid);
-                $pos = array_search($userId, $ratearray);
-                $totalarray[$pos - 1] = $rating;
-                $total = 0;
-                $final = 0;
-                foreach ($totalarray as $value) {
-                    $total += $value;
-                    if ($value != 0) {
-                        $final .= "+" . $value;
-                    }
-                }
-                $book->rating = $total / $timesRated;
-                $book->save();
-                $rate->rating = $final;
-                $rate->save();
-                return Redirect::to('/store/select/' . $bookId);
-            }
-            //Adds new rating as user has not rated the book
-            else {
-                $rate->rating .= "+" . $rating;
-                $rate->userid .= "id" . $userId;
-                $rate->save();
-                $totalarray = explode("+", $rate->rating);
-                $total = 0;
-                foreach ($totalarray as $value) {
-                    $total += $value;
-                }
-                $book->rating = $total / $timesRated;
-                $book->save();
-                return Redirect::to('/store/select/' . $bookId);
-            }
+            if ($userRating == null) {
+				$userRate->userid = $userId;
+				$userRate->bookid = $bookId;
+			} else {
+				$userRate = $userRating;
+			}
+			$userRate->rating = $rating;
+			$userRate->save();
+
+            $book->rating = $rate->avg('rating');
+            $book->save();
+            return Redirect::to('/store/select/' . $bookId);
         }
         else
             return Redirect::to('/store/login');
@@ -162,14 +166,19 @@ class BookstoreController extends BaseController {
     /**
      * Handles adding a book to the user's cart
      */
-    public function addCartAction($bookid) {
+    public function addCartAction($bookId) {
+    	$book = Book::find($bookId);
+		if($book->availability < 1){
+        	return View::make('select')->with('booklist', $book);
+		}
         if (Auth::check()) {
-            $id = Auth::user()->id;
-            $booktable = Cart::find($id);
-            if (strpos($booktable->cart, "id" . $bookid) === false) {
-                $insert = "id" . $bookid;
-                $booktable->cart .= $insert;
-                $booktable->save();
+            $userId = Auth::user()->id;
+            $cart = Cart::where("bookid", "=", $bookId)->where("userid", "=", $userId)->first();
+            if ($cart === null) {
+            	$cart = new Cart();
+                $cart->bookid = $bookId;
+                $cart->userid = $userId;
+                $cart->save();
             }
             return Redirect::to('/store/viewcart');
         }
@@ -183,9 +192,8 @@ class BookstoreController extends BaseController {
     public function viewCartAction() {
         if (Auth::check()) {
             $id = Auth::user()->id;
-            $cart = Cart::find($id);
-            $cartarray = explode("id", $cart->cart);
-            return View::make('cart')->with('query', $cartarray);
+            $cart = Cart::where('userid', '=', $id)->get();
+            return View::make('cart')->with('query', $cart);
         }
         else
             return Redirect::to('/store/login');
@@ -201,13 +209,12 @@ class BookstoreController extends BaseController {
     /**
      * Removes the book from the user's cart
      */
-    public function removeCartAction($bookid) {
+    public function removeCartAction($bookId) {
         if (Auth::check()) {
-            $id = Auth::user()->id;
-            $booktable = Cart::find($id);
-            if (strpos($booktable->cart, "id" . $bookid . "i") !== false) {
-                $booktable->cart = str_replace("id" . $bookid . "i", "i", $booktable->cart);
-                $booktable->save();
+            $userId = Auth::user()->id;
+            $cart = Cart::where("bookid", "=", $bookId)->where("userid", "=", $userId)->first();
+            if ($cart !== null) {
+                $cart->delete();
             }
             return Redirect::to('/store/viewcart');
         }
@@ -219,9 +226,11 @@ class BookstoreController extends BaseController {
      * Returns the checkout page with a list of items in the user's cart
      */
     public function checkoutAction() {
-        $cartlist = explode("id", Cart::find(Auth::user()->id)->cart);
-        Session::put('put', 'unset');
-        return View::make('checkout')->with('query', $cartlist);
+        if (Auth::check()) {
+            $id = Auth::user()->id;
+            $cart = Cart::where('userid', '=', $id)->get();
+            return View::make('checkout')->with('query', $cart);
+        }
     }
 
     /**
@@ -233,8 +242,9 @@ class BookstoreController extends BaseController {
             Session::put('put', 'unset');
             return Redirect::to('/store/viewcart');
         } else {
-            $cartlist = explode("id", Cart::find(Auth::user()->id)->cart);
-            return View::make('receipt')->with(array('query' => $cartlist, 'credit', Input::get('credit')));
+            $id = Auth::user()->id;
+            $cart = Cart::where('userid', '=', $id)->get();
+            return View::make('receipt')->with(array('query' => $cart, 'credit', Input::get('credit')));
         }
     }
 

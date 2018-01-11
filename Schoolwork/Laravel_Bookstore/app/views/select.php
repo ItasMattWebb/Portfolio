@@ -23,15 +23,15 @@
             $i = 0;
             while ($i < $rating) {
                 $i++;
-                echo '<a id="star" href="/' . dirname($_SERVER['SCRIPT_NAME']) . 'store/rate/' . $i . '">&#9733; </a>';
+                echo '<a class="star" href="' . dirname($_SERVER['SCRIPT_NAME']) . '/store/rate/' . $i . '">&#9733; </a>';
             }
             while ($i < 5) {
                 $i++;
-                echo '<a href="' . dirname($_SERVER['SCRIPT_NAME']) . '/store/rate/' . $i . '">&#9734; </a>';
+                echo '<a class="star-blank" href="' . dirname($_SERVER['SCRIPT_NAME']) . '/store/rate/' . $i . '">&#9734; </a>';
             }
             echo '</td><td>';
             echo Form::open(array('url' => '/store/addcart/'. $booklist->id));
-            echo Form::submit('add to cart');
+            echo Form::submit('add to cart', ['disabled' => $booklist->availability > 0]);
             echo Form::close();
             echo '</tr></table>';
             Session::put('currentbook', $booklist->id)

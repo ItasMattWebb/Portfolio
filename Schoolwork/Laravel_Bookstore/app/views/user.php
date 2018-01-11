@@ -2,16 +2,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="/css/site.css"/>
+        <link rel="stylesheet" type="text/css" href="<?=dirname($_SERVER['SCRIPT_NAME']); ?>/css/site.css"/>
         <title><?php echo Auth::user()->username ?>'s account. Bookstore</title>
     </head>
     <body>
-        <div id="bg">            
+        <div id="bg">
             <?php
             include "include.php";
             echo "<div id=\"header\">Laravel Bookstore</div><div>";
-            echo '<table border="0"><tr class="tbl_header"><td>username</td><td>password</td><td>email</td></tr>';
-            echo '<tr class="odd"><td>' . Auth::user()->username . '</td><td>' . Auth::user()->password . '</td><td>' . Auth::user()->email . '</td></tr>';
+            echo '<table border="0"><tr class="tbl_header"><td>username</td><td>email</td></tr>';
+            echo '<tr class="odd"><td>' . Auth::user()->username . '</td><td>' . Auth::user()->email . '</td></tr>';
             echo '<tr class="even"><td>' . Form::open(array('url' => 'store/user/username'));
             echo Form::text('username') . "<br>";
             echo Form::submit('change username') . '</td>';
