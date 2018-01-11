@@ -41,8 +41,9 @@
                         for($i = 0; $i < 5; $i++) {
                         	if($i < $rating){
                             	$ratingstar .= "&#9733;";
+                        	} else {
+                            	$ratingstar .= "&#9734;";
                         	}
-                            $ratingstar .= "&#9734;";
                         }
                         echo '<td>' . $ratingstar . '</td></tr>';
                     }

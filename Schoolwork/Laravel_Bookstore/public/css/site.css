@@ -34,18 +34,31 @@ td{
     font-size: 125%;
     color: #000;
 }
-a:link {color:#000;text-decoration:none;}
-a:visited {color:#000;text-decoration:none;}
-a:hover {color:#000;text-decoration:none;}
-a:active {color:#000;text-decoration:none;}
-.link{
-    color:#000;
-}
-#star{
+a {color:#000;text-decoration:none;}
+
+.star{
     color:#ff0;
+}
+
+.star-blank{
+    color:#000;
 }
 
 img {
 	margin:auto;
 	display:block;
+}
+
+.menu{
+	font-size:20px;
+}
+
+.menu a{
+	padding: 5px 12px;
+	border: 1px solid black;
+	background: #FFF;
+}
+
+table a{
+	color:#00B;
 }

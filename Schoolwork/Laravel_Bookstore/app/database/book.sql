@@ -72,3 +72,5 @@ INSERT INTO bookdb.rate (rating, userid)
 	VALUES ('0', 'id0');
 INSERT INTO bookdb.rate (rating, userid) 
 	VALUES ('0', 'id0');
+	
+CREATE TABLE `cart` (id INT NOT NULL AUTO_INCREMENT, bookid INT NOT NULL, userid INT NOT NULL, PRIMARY KEY (id));

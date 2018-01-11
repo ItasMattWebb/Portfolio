@@ -23,7 +23,7 @@
                     $stripe = false;
                     $totalprice = "";
                     foreach ($query as $book) {
-                        $entry = Book::find($book);
+                        $entry = Book::find($book->bookid);
                         $stripe = !$stripe;
                         if ($stripe) {
                             echo '<tr class="odd"> ';
@@ -37,7 +37,7 @@
                         $totalprice += $entry['price'];
                     }
                     echo "<tr><td></td><td>Total:</td><td>" . $totalprice . "</td></tr></table></div><div>";
-            echo Form::open(array('url' => dirname($_SERVER['SCRIPT_NAME']) . 'store/receipt'));
+            echo Form::open(array('url' => 'store/receipt'));
             echo Form::label('credit', 'Credit card #: ');
             echo Form::text('credit') . "<br>";
             echo Form::submit('complete purchase');
