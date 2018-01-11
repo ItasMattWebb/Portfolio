@@ -1,0 +1,38 @@
+<?php
+/*Layout used for all pages that changes based on what user is logged in.*/
+$this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
+$this->headTitle()->setSeparator(' - ');
+$this->headTitle('Zend Framework Helpdesk');
+echo $this->doctype();
+?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <?php echo $this->headMeta(); ?>
+        <?php echo $this->headTitle(); ?>
+        <?php echo $this->headLink()->prependStylesheet($this->baseUrl() . '/css/site.css'); ?>
+    </head>
+    <body>
+        <?php
+        $auth = Zend_Auth::getInstance();
+        if ($auth->hasIdentity()) {
+            echo '<table border="1" bgcolor="#A5A5FF"><td><a href="/index/home">Home</a></td>';
+            echo '<td><a href="/index/account">My Account</a></td>';
+            if ($auth->getIdentity()->account_type_id < 3) {
+                if ($auth->getIdentity()->account_type_id == 1) {
+                    echo '<td><a href="/index/accountManage">Manage accounts</a></td>';
+                }
+                echo '<td><a href="/index/unassigned">Unassigned Tickets</a></td>';
+                echo '<td><form action="/request/search" method="POST">
+                        ID: <input type="text" name="id"><br>
+                        <input type="submit" value="Search">
+                        </form> ';
+            }
+            echo "</table>";
+        }
+        ?>
+        <div id="content">
+            <h1><?php echo $this->escape($this->title); ?></h1>
+            <?php echo $this->layout()->content; ?>
+        </div>
+    </body>
+</html>

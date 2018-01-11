@@ -1,0 +1,75 @@
+<table frame="box">
+    <tr>
+        <th>id</th>
+        <th>username</th>
+        <th>full name</th>
+        <th>password</th>
+        <th>account type</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php
+
+    function getId($id) {
+        $account = new Application_Model_DbTable_Account();
+        $select = $account->select()->where('id = ' . $id, 'description');
+        $row = $account->fetchRow($select);
+        return $row->description;
+    }
+
+    $this->title = "Edit accounts";
+    $this->headTitle($this->title);
+    foreach ($this->users as $user) {
+        ?>
+        <tr>
+            <td><?php echo $this->escape($user->id); ?></td>
+            <td><?php echo $this->escape($user->username); ?></td>
+            <td><?php echo $this->escape($user->full_name); ?></td>
+            <td><?php echo $this->escape($user->password); ?></td>
+            <td><?php echo getId($this->escape($user->account_type_id)); ?></td>
+            <td>
+                <?php
+                echo '<a href="' . $this->url(array('controller' => 'index', 'action' => 'editAccount', 'id' => $user->id)) . '">Edit</a>
+                     <a href="' . $this->url(array('controller' => 'index', 'action' => 'deleteAccount', 'id' => $user->id)) . '">Delete</a> ';
+            }
+            ?>
+        </td>
+</table>
+<?php
+$account = new Application_Model_DbTable_Account();
+$selectAll = $account->select();
+$fetchAll = $account->fetchAll($selectAll);
+?>
+<h1>Edit account types</h1>
+<table frame="box">
+    <tr>
+        <th>id</th>
+        <th>description</th>
+        <th>enabled</th>
+    </tr>
+    <?php
+    foreach ($fetchAll as $item) {
+        echo "<tr><td>" . $this->escape($item->id) . "</td><td>" . $this->escape($item->description) . "</td><td>" . $this->escape($item->enabled) . "</td><td>
+            <a href='" . $this->url(array('controller' => 'index', 'action' => 'editAccountType', 'id' => $item->id)) . "'>Edit</a>";
+    }
+    $status = new Application_Model_DbTable_Status();
+    $selectAll2 = $status->select();
+    $fetchAll2 = $status->fetchAll($selectAll2);
+    ?>
+</table>
+<a href="/index/addAccountType">Add account type</a>
+
+<h1>Edit ticket types</h1>
+<table frame="box">
+    <tr>
+        <th>id</th>
+        <th>description</th>
+        <th>enabled</th>
+    </tr>
+    <?php
+    foreach ($fetchAll2 as $item) {
+        echo "<tr><td>" . $this->escape($item->id) . "</td><td>" . $this->escape($item->description) . "</td><td>" . $this->escape($item->enabled) . "</td><td>
+            <a href='" . $this->url(array('controller' => 'index', 'action' => 'editStatus', 'id' => $item->id)) . "'>Edit</a>";
+    }
+    ?>
+</table>
+<a href="/index/addStatus">Add status</a>

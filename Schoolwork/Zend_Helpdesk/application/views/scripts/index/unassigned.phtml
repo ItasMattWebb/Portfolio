@@ -1,0 +1,62 @@
+<?php
+$this->title = "Unassigned Tickets";
+$this->headTitle($this->title);
+echo $this->loggedInAs();
+?> 
+<table frame="box">
+    <tr>
+        <th>id</th>
+        <th>date in</th>
+        <th>originator</th>
+        <th>assigned to</th>
+        <th>subject</th>
+        <th>description</th>
+        <th>comments</th>
+        <th>date out</th>
+        <th>priority</th>
+        <th>categories</th>
+        <th>status</th>
+        <th>&nbsp;</th>
+    </tr>
+    <?php
+    $auth = Zend_Auth::getInstance();
+    $accountTypeId = $auth->getIdentity()->account_type_id;
+    $account = new Application_Model_DbTable_User();
+    $status = new Application_Model_DbTable_Status();
+    $priority = new Application_Model_DbTable_Priority();
+    $category = new Application_Model_DbTable_Category();
+
+
+    foreach ($this->request as $request) {
+        ?>
+        <tr>
+            <td><?php echo $this->escape($request->id); ?></td>
+            <td><?php echo $this->escape($request->date_in); ?></td>
+            <td><?php echo $account->getId($this->escape($request->originator_id)); ?></td>
+            <td><?php echo $account->getId($this->escape($request->assigned_to_id)); ?></td>
+            <td><?php echo $this->escape($request->subject); ?></td>
+            <td><?php echo $this->escape($request->description); ?></td>
+            <td><?php echo $this->escape($request->comments); ?></td>
+            <td><?php echo $this->escape($request->date_out); ?></td>
+            <td><?php echo $priority->getPriorityId($this->escape($request->priority)); ?></td>
+            <td><?php echo $category->calcCategory($this->escape($request->category)); ?></td>
+            <td><?php echo $status->getStatusId($this->escape($request->status_id)); ?></td>
+            <td>
+                <?php
+                if ($request->status_id == 1) {
+                    echo '<a href="' . $this->url(array('controller' => 'request',
+                        'action' => 'assign', 'id' => $request->id)) .
+                    '">Assign</a>';
+                }
+                if ($accountTypeId == 1) {
+                    echo '<a href="' . $this->url(array('controller' => 'request',
+                        'action' => 'edit', 'id' => $request->id)) .
+                    '">Edit</a>';
+                }
+                ?>
+            </td>
+        </tr>
+        <?php
+    }
+    ?>
+</table>

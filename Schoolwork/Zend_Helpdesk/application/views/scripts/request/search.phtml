@@ -1,0 +1,74 @@
+<?php
+$this->title = "Tickets";
+$this->headTitle($this->title);
+echo $this->loggedInAs();
+?> 
+
+<?php
+$auth = Zend_Auth::getInstance();
+if (!$auth->hasIdentity()) {
+    $this->_helper->redirector('index', 'index');
+}
+
+
+
+$accountTypeId = $auth->getIdentity()->account_type_id;
+$accountId = $auth->getIdentity()->id;
+$account = new Application_Model_DbTable_User();
+$status = new Application_Model_DbTable_Status();
+$priority = new Application_Model_DbTable_Priority();
+$category = new Application_Model_DbTable_Category();
+
+if (isset($this->request['id'])) {
+
+    if ($accountId == $this->request['originator_id'] || $accountTypeId == 1 || $accountId == $this->request['assigned_to_id']) {
+        ?><table frame="box">
+            <tr>
+                <th>id</th>
+                <th>date in</th>
+                <th>originator</th>
+                <th>assigned to</th>
+                <th>subject</th>
+                <th>description</th>
+                <th>comments</th>
+                <th>date out</th>
+                <th>priority</th>
+                <th>category</th>
+                <th>status_id</th>
+                <th>&nbsp;</th>
+            </tr>
+            <tr>
+                <td><?php echo $this->escape($this->request['id']); ?></td>
+                <td><?php echo $this->escape($this->request['date_in']); ?></td>
+                <td><?php echo $account->getId($this->escape($this->request['originator_id'])); ?></td>
+                <td><?php echo $account->getId($this->escape($this->request['assigned_to_id'])); ?></td>
+                <td><?php echo $this->escape($this->request['subject']); ?></td>
+                <td><?php echo $this->escape($this->request['description']); ?></td>
+                <td><?php echo $this->escape($this->request['comments']); ?></td>
+                <td><?php echo $this->escape($this->request['date_out']); ?></td>
+                <td><?php echo $priority->getPriorityId($this->escape($this->request['priority'])); ?></td>
+                <td><?php echo $category->calcCategory($this->escape($this->request['category'])); ?></td>
+                <td><?php echo $status->getStatusId($this->escape($this->request['status_id'])); ?></td>
+                <td>
+                    <?php
+                    if (($this->request['status_id'] < 3 && $auth->getIdentity()->id == $this->request['originator_id']) || ($auth->getIdentity()->account_type_id == 2 && $this->request['status_id'] < 3) || $auth->getIdentity()->account_type_id == 1) {
+                        echo '<a href="' . $this->url(array('controller' => 'request', 'action' => 'edit', 'id' => $this->request['id'])) . '">Edit</a> ';
+                    }
+                    if ($auth->getIdentity()->account_type_id == 1) {
+                        echo '<a href="' . $this->url(array('controller' => 'request', 'action' => 'delete', 'id' => $this->request['id'])) . '">Delete</a> ';
+                    }
+                    if ($this->request['status_id'] < 3 && $auth->getIdentity()->id == $this->request['originator_id'] && $auth->getIdentity()->account_type_id != 1) {
+                        echo '<a href="' . $this->url(array('controller' => 'request', 'action' => 'cancel', 'id' => $this->request['id'])) . '">Cancel</a>';
+                    }
+                    ?>
+                </td>
+            </tr>
+        </table>
+        <?php
+    }
+} else {
+    echo "No results found";
+}
+?>
+<?php
+?>

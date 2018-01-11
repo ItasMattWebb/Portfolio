@@ -1,0 +1,35 @@
+<?php
+$this->title = "Delete request";
+$this->headTitle($this->title);
+
+function getId($id) {
+    $account = new Application_Model_DbTable_Account();
+    $select = $account->select()->where('id = ' . $id, 'description');
+    $row = $account->fetchRow($select);
+    return $row->description;
+}
+?>
+<p>Are you sure that you want to delete
+<table border="2ex">
+    <tr>
+        <th>id</th>
+        <th>full name</th>
+        <th>username</th>
+        <th>account type</th>
+    </tr>
+    <tr>
+        <td><?php echo $this->escape($this->request['id']); ?></td>
+        <td><?php echo $this->escape($this->request['full_name']); ?></td>
+        <td><?php echo $this->escape($this->request['username']); ?></td>
+        <td><?php echo getId($this->escape($this->request['account_type_id'])); ?></td>
+    </tr>
+</table>
+
+</p>
+<form action="<?php echo $this->url(array('action' => 'deleteaccount')); ?>" method="post">
+    <div>
+        <input type="hidden" name="id" value="<?php echo $this->request['id']; ?>" />
+        <input type="submit" name="del" value="Yes" />
+        <input type="submit" name="del" value="No" />
+    </div>
+</form>

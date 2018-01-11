@@ -1,0 +1,60 @@
+<?php
+$this->title = "Delete request";
+$this->headTitle($this->title);
+
+function getId($id) {
+    $account = new Application_Model_DbTable_User();
+    $select = $account->select()->where('id = ' . $id, 'username');
+    $row = $account->fetchRow($select);
+    return $row->username;
+}
+    function getStatusId($id) {
+        $status = new Application_Model_DbTable_Status();
+        $select = $status->select()->where('id = '.$id, 'description');
+        $row = $status->fetchRow($select);
+        return $row->description;
+    }
+    function getPriorityId($id) {
+        $priority = new Application_Model_DbTable_Priority();
+        $select = $priority->select()->where('id = '.$id, 'description');
+        $row = $priority->fetchRow($select);
+        return $row->description;
+    }
+?>
+<p>Are you sure that you want to delete
+<table border="2ex">
+    <tr>
+        <th>id</th>
+        <th>date_in</th>
+        <th>originator_id</th>
+        <th>assigned_to_id</th>
+        <th>subject</th>
+        <th>description</th>
+        <th>comments</th>
+        <th>date_out</th>
+        <th>priority</th>
+        <th>status_id</th>
+        <th>&nbsp;</th>
+    </tr>
+    <tr>
+        <td><?php echo $this->escape($this->request['id']); ?></td>
+        <td><?php echo $this->escape($this->request['date_in']); ?></td>
+        <td><?php echo getId($this->escape($this->request['originator_id'])); ?></td>
+        <td><?php echo getId($this->escape($this->request['assigned_to_id'])); ?></td>
+        <td><?php echo $this->escape($this->request['subject']); ?></td>
+        <td><?php echo $this->escape($this->request['description']); ?></td>
+        <td><?php echo $this->escape($this->request['comments']); ?></td>
+        <td><?php echo $this->escape($this->request['date_out']); ?></td>
+        <td><?php echo getPriorityId($this->escape($this->request['priority'])); ?></td>
+        <td><?php echo getStatusId($this->escape($this->request['status_id'])); ?></td>
+    </tr>
+</table>
+
+</p>
+<form action="<?php echo $this->url(array('action' => 'delete')); ?>" method="post">
+    <div>
+        <input type="hidden" name="id" value="<?php echo $this->request['id']; ?>" />
+        <input type="submit" name="del" value="Yes" />
+        <input type="submit" name="del" value="No" />
+    </div>
+</form>
